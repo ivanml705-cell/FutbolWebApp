@@ -42,7 +42,7 @@ New-ItemProperty -Path $registryPath -Name PurgePoolInterval -Value 24 -Property
 New-ItemProperty -Path $registryPath -Name OperationMode -Value "Local" -PropertyType String -Force | Out-Null
 New-ItemProperty -Path $registryPath -Name ProgramParameters -Value "" -PropertyType String -Force | Out-Null
 
-& icacls $appHtml /grant "IIS_IUSRS:(OI)(CI)RX" | Out-Null
+& icacls $appHtml /grant "IIS_IUSRS:(OI)(CI)RX" "IUSR:(OI)(CI)RX" | Out-Null
 
 & $appCmd list app "$SiteName/$VirtualDir" | Out-Null
 if ($LASTEXITCODE -eq 0) {
@@ -51,6 +51,8 @@ if ($LASTEXITCODE -eq 0) {
 
 & $appCmd add app "/site.name:$SiteName" "/path:/$VirtualDir" "/physicalPath:$appHtml" | Out-Null
 & $appCmd set app "$SiteName/$VirtualDir" "/applicationPool:DefaultAppPool" | Out-Null
+& $appCmd set config "$SiteName/$VirtualDir" -section:system.webServer/security/authentication/anonymousAuthentication /enabled:true /commit:apphost | Out-Null
+& $appCmd set config "$SiteName/$VirtualDir" -section:system.webServer/security/authentication/windowsAuthentication /enabled:false /commit:apphost | Out-Null
 
 Start-Service -Name W3SVC
 Restart-Service -Name DFWAS250 -Force
