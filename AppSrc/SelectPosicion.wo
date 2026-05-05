@@ -1,0 +1,125 @@
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebList.pkg
+Use cWebColumn.pkg
+Use cWebColumnButton.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+
+Use cPosicionDataDictionary.dd
+
+Register_Object oZoomPosicion
+
+Object oSelectPosicion is a cWebView
+    Set peWebViewStyle to wvsDrillDown
+    Set peViewType to vtSelect
+    Set psCaption to "Posiciones"
+    Set psStateViewName to "Posiciones"
+    Set piMaxWidth to 1024
+    Set piColumnCount to 6
+    Set peLayoutType to ltGrid
+
+    WebSetResponsive piColumnCount rmTabletPortrait to 3
+
+    Object oPosicion_DD is a cPosicionDataDictionary
+    End_Object
+
+    Set Main_DD to oPosicion_DD
+    Set Server to oPosicion_DD
+
+    Object oWebMainPanel is a cWebPanel
+        Set psRowHeights to "0/1fr"
+        Set piRowCount to 1
+
+        Object oList is a cWebList
+            Set pbFillHeight to True
+            Set piColumnSpan to 0
+            Set pbServerOnRowClick to True
+            Set psCSSClass to "MobileList"
+            Set piSortColumn to 0
+            Set pbShowHeader to False
+
+            WebRegisterPath ntNavigateForward oZoomPosicion Self "EditPosicion"
+
+            Object oNombre is a cWebColumn
+                Entry_Item posicion.Nombre
+                Set psCaption to "Nombre"
+                Set psCSSClass to "RowCaption"
+                Set peAlign to alignLeft
+                Set piWidth to 300
+                Set piListColSpan to 4
+            End_Object
+
+            Object oDetailButton is a cWebColumnButton
+                Set piWidth to 45
+                Set pbFixedWidth to True
+                Set psCaption to "btn"
+                Set pbResizable to False
+                Set psBtnCssClass to "WebButtonIcon WebIcon_Info"
+                Set peAlign to alignRight
+
+                WebRegisterPath ntNavigateForward oZoomPosicion Self "EditPosicionButton"
+
+                Procedure OnClick String sButton String sRowId
+                    Send NavigateForward of oZoomPosicion Self
+                End_Procedure
+            End_Object
+
+            Procedure OnRowClick String sRowID
+                Send NavigateForward of oZoomPosicion Self
+            End_Procedure
+        End_Object
+    End_Object
+
+    Object oActionGroup is a cWebMenuGroup
+        Set psGroupName to "MainActions"
+
+        Object oSearch is a cWebMenuItem
+            Set psCaption to "Buscar"
+            Set psCSSClass to "WebPromptMenuItem"
+
+            Procedure OnClick
+                Send Search of oList
+            End_Procedure
+        End_Object
+
+        Object oNewButton is a cWebMenuItem
+            Set psCaption to "Nuevo"
+            Set psCSSClass to "WebClearMenuItem"
+
+            WebRegisterPath ntNavigateForward oZoomPosicion Self "NewPosicion"
+
+            Procedure OnClick
+                Send NavigateForward of oZoomPosicion Self
+            End_Procedure
+
+            Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                Move True to NavigateData.bNewRecord
+            End_Procedure
+        End_Object
+
+        Object oFindTop is a cWebMenuItem
+            Set psCaption to "Inicio"
+            Set peActionDisplay to adMenu
+            Set pbBeginGroup to True
+
+            Procedure OnClick
+                Send MoveToFirstRow of oList
+            End_Procedure
+        End_Object
+
+        Object oFindLast is a cWebMenuItem
+            Set psCaption to "Final"
+            Set peActionDisplay to adMenu
+
+            Procedure OnClick
+                Send MoveToLastRow of oList
+            End_Procedure
+        End_Object
+    End_Object
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Handle hoInvokingView Handle hoInvokingObject
+        Send SetBreadcrumbCaption "Posiciones"
+        Send SetHeaderCaption "Posiciones"
+    End_Procedure
+End_Object
