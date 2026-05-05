@@ -3,6 +3,16 @@ Use cConnection.pkg
 Use cWebMenuItem.pkg
 
 Register_Object oDashboard
+Register_Object oSelectEntrenador
+Register_Object oZoomEntrenador
+Register_Object oSelectJugador
+Register_Object oZoomJugador
+Register_Object oSelectPosicion
+Register_Object oZoomPosicion
+Register_Object oSelectEquipo
+Register_Object oZoomEquipo
+Register_Object oSelectLiga
+Register_Object oZoomLiga
 
 Object oApplication is a cApplication
     Object oConnection is a cConnection
@@ -116,6 +126,16 @@ Object oWebApp is a cWebApp
     Use SessionManager.wo
     Use WebResourceManager.wo
     Use Dashboard.wo
+    Use SelectEntrenador.wo
+    Use ZoomEntrenador.wo
+    Use SelectJugador.wo
+    Use ZoomJugador.wo
+    Use SelectPosicion.wo
+    Use ZoomPosicion.wo
+    Use SelectEquipo.wo
+    Use ZoomEquipo.wo
+    Use SelectLiga.wo
+    Use ZoomLiga.wo
 
     Set phoDefaultView to oDashboard
 End_Object

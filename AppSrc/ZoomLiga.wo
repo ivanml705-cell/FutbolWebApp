@@ -1,0 +1,144 @@
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg
+Use cWebButton.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+
+Use cLigaDataDictionary.dd
+
+Object oZoomLiga is a cWebView
+    Set peWebViewStyle to wvsDrillDown
+    Set peViewType to vtZoom
+    Set psCaption to "Liga"
+    Set psStateViewName to "Liga"
+    Set pbShowCaption to False
+    Set Verify_Save_msg to 0
+    Set piMaxWidth to 720
+    Set piColumnCount to 12
+    Set peLayoutType to ltGrid
+
+    Object oLiga_DD is a cLigaDataDictionary
+    End_Object
+
+    Set Main_DD to oLiga_DD
+    Set Server to oLiga_DD
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        WebSetResponsive piColumnCount rmMobile to 6
+
+        Object oID is a cWebForm
+            Entry_Item liga.ID
+            Set psLabel to "ID"
+            Set psPlaceHolder to "Nuevo"
+            Set piColumnSpan to 0
+            Set piLabelOffset to 110
+            Set pbEnabled to False
+
+            WebSetResponsive peLabelPosition rmMobile to lpTop
+            WebSetResponsive piLabelOffset rmMobile to 0
+        End_Object
+
+        Object oNombre is a cWebForm
+            Entry_Item liga.Nombre
+            Set psLabel to "Nombre"
+            Set piColumnSpan to 0
+            Set piLabelOffset to 110
+
+            WebSetResponsive peLabelPosition rmMobile to lpTop
+            WebSetResponsive piLabelOffset rmMobile to 0
+        End_Object
+
+        Object oPais is a cWebForm
+            Entry_Item liga.Pais
+            Set psLabel to "Pais"
+            Set piColumnSpan to 0
+            Set piLabelOffset to 110
+
+            WebSetResponsive peLabelPosition rmMobile to lpTop
+            WebSetResponsive piLabelOffset rmMobile to 0
+        End_Object
+
+        Object oEquipos is a cWebForm
+            Entry_Item liga.Equipos
+            Set psLabel to "Equipos"
+            Set piColumnSpan to 0
+            Set piLabelOffset to 110
+
+            WebSetResponsive peLabelPosition rmMobile to lpTop
+            WebSetResponsive piLabelOffset rmMobile to 0
+        End_Object
+
+        Object oEquiposMax is a cWebForm
+            Entry_Item liga.EquiposMax
+            Set psLabel to "Equipos max"
+            Set piColumnSpan to 0
+            Set piLabelOffset to 110
+
+            WebSetResponsive peLabelPosition rmMobile to lpTop
+            WebSetResponsive piLabelOffset rmMobile to 0
+        End_Object
+
+        Object oButtonPanel is a cWebPanel
+            Set piColumnCount to 12
+            Set piColumnSpan to 0
+
+            Object oGuardar is a cWebButton
+                Set psCaption to "Guardar"
+                Set piColumnSpan to 3
+
+                Procedure OnClick
+                    Send Request_Save
+                End_Procedure
+            End_Object
+
+            Object oNuevo is a cWebButton
+                Set psCaption to "Nuevo"
+                Set piColumnSpan to 3
+
+                Procedure OnClick
+                    Send Request_Clear
+                End_Procedure
+            End_Object
+        End_Object
+    End_Object
+
+    Object oActionGroup is a cWebMenuGroup
+        Set psGroupName to "MainActions"
+
+        Object oSaveBtn is a cWebMenuItem
+            Set psCaption to "Guardar"
+            Set psCSSClass to "WebSaveMenuItem"
+
+            Procedure OnClick
+                Send Request_Save
+            End_Procedure
+        End_Object
+
+        Object oNewBtn is a cWebMenuItem
+            Set psCaption to "Nuevo"
+            Set psCSSClass to "WebClearMenuItem"
+            Set peActionDisplay to adMenu
+
+            Procedure OnClick
+                Send Request_Clear
+            End_Procedure
+        End_Object
+    End_Object
+
+    Procedure OnViewSaved Handle hoServer Boolean bChanged
+        Send NavigateClose Self
+    End_Procedure
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Handle hoInvokingView Handle hoInvokingObject
+        If (NavigateData.bNewRecord) Begin
+            Send SetBreadcrumbCaption "Nueva liga"
+        End
+        Else Begin
+            Send SetBreadcrumbCaption "Editar liga"
+        End
+
+        Send SetHeaderCaption "Liga"
+    End_Procedure
+End_Object
