@@ -3,6 +3,7 @@ param(
     [string]$HostName = "127.0.0.1",
     [int]$Port = 3306,
     [string]$User = "root",
+    [string]$LoginPath = "",
     [string]$Database = "futbol",
     [string]$SqlPath = "..\futbolBD.sql",
     [switch]$PromptPassword
@@ -16,15 +17,20 @@ if (-not (Test-Path -LiteralPath $MysqlExe)) {
     throw "mysql.exe not found at '$MysqlExe'."
 }
 
-$baseArgs = @(
-    "--host=$HostName",
-    "--port=$Port",
-    "--user=$User",
-    "--protocol=tcp"
-)
+if ($LoginPath) {
+    $baseArgs = @("--login-path=$LoginPath")
+}
+else {
+    $baseArgs = @(
+        "--host=$HostName",
+        "--port=$Port",
+        "--user=$User",
+        "--protocol=tcp"
+    )
 
-if ($PromptPassword) {
-    $baseArgs += "--password"
+    if ($PromptPassword) {
+        $baseArgs += "--password"
+    }
 }
 
 & $MysqlExe @baseArgs --execute="CREATE DATABASE IF NOT EXISTS $Database CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;"
