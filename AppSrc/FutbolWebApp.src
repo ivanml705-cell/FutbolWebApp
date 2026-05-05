@@ -9,6 +9,8 @@ Register_Object oSelectJugador
 Register_Object oZoomJugador
 Register_Object oSelectPosicion
 Register_Object oZoomPosicion
+Register_Object oSelectEquipo
+Register_Object oZoomEquipo
 
 Object oApplication is a cApplication
     Object oConnection is a cConnection
@@ -128,6 +130,8 @@ Object oWebApp is a cWebApp
     Use ZoomJugador.wo
     Use SelectPosicion.wo
     Use ZoomPosicion.wo
+    Use SelectEquipo.wo
+    Use ZoomEquipo.wo
 
     Set phoDefaultView to oDashboard
 End_Object
