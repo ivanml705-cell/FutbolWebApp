@@ -29,6 +29,9 @@ Object oDashboard is a cWebView
             Set piColumnCount to 12
             Set psCSSClass to "TilesGroup"
 
+            WebSetResponsive piColumnCount rmMobile to 6
+            WebSetResponsive piColumnSpan rmMobile to 0
+
             Object oWelcomeTile is a cWebHtmlBox
                 Set piColumnSpan to 6
                 Set psCSSClass to "Tile Light"
@@ -38,7 +41,6 @@ Object oDashboard is a cWebView
             Object oEntrenadorTile is a cWebHtmlBox
                 Set pbServerOnClick to True
                 Set piColumnSpan to 6
-                Set piColumnIndex to 6
                 Set psCSSClass to "Tile LightAlternate"
                 Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Entrenadores</div><div class="Tile_Subtitle">Abrir listado</div></div>'
 
@@ -65,7 +67,6 @@ Object oDashboard is a cWebView
             Object oPosicionTile is a cWebHtmlBox
                 Set pbServerOnClick to True
                 Set piColumnSpan to 6
-                Set piColumnIndex to 6
                 Set psCSSClass to "Tile DarkAlternate"
                 Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Posiciones</div><div class="Tile_Subtitle">Abrir listado</div></div>'
 
@@ -92,7 +93,6 @@ Object oDashboard is a cWebView
             Object oLigaTile is a cWebHtmlBox
                 Set pbServerOnClick to True
                 Set piColumnSpan to 6
-                Set piColumnIndex to 6
                 Set psCSSClass to "Tile LightAlternate"
                 Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Ligas</div><div class="Tile_Subtitle">Abrir listado</div></div>'
 
