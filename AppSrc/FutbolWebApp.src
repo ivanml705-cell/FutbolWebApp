@@ -1,6 +1,7 @@
 Use AllWebAppClasses.pkg
 Use cConnection.pkg
 Use cWebMenuItem.pkg
+Use FutbolWebServerPropStore.pkg
 
 Register_Object oDashboard
 Register_Object oSelectEntrenador
@@ -136,6 +137,22 @@ Object oWebApp is a cWebApp
     Use ZoomEquipo.wo
     Use SelectLiga.wo
     Use ZoomLiga.wo
+
+    Procedure InitPropStores
+        String sRoot
+
+        If (ghoWebServerPropStore = 0) Begin
+            Declare_Datafile WebAppServerProps
+            Get_Attribute DF_FILE_ROOT_NAME of (RefTable(WebAppServerProps)) to sRoot
+            If (Trim(sRoot) <> "") Begin
+                Get Create (RefClass(cFutbolWebServerPropStore)) to ghoWebServerPropStore
+            End
+        End
+
+        If (ghoWebServerPropStore <> 0) Begin
+            Set pbLocking of ghoWebServerPropStore to True
+        End
+    End_Procedure
 
     Set phoDefaultView to oDashboard
 End_Object

@@ -1,6 +1,7 @@
 Use DataDict.pkg
 
 Open WebAppSession
+Open WebAppUser
 
 Class cWebAppSessionDataDictionary is a DataDictionary
 
@@ -8,10 +9,48 @@ Class cWebAppSessionDataDictionary is a DataDictionary
         Forward Send Construct_Object
         Set Main_File to WebAppSession.File_Number
 
+        Set Add_Server_File to WebAppUser.File_Number
+        Set ParentNullAllowed WebAppUser.File_Number to True
+
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+
+        Set Field_Checkbox_Values Field WebAppSession.Active to "Y" "N"
+        Set Field_Error Field WebAppSession.Active to 500 "Invalid WebAppSession Active State"
     End_Procedure
+
+    Procedure Creating
+        DateTime dtCurrentDateTime
+
+        Forward Send Creating
+
+        Move 0 to WebAppSession.UseCount
+        Move (CurrentDateTime()) to dtCurrentDateTime
+
+        Get TimeToString dtCurrentDateTime to WebAppSession.CreateTime
+        Get TimeToString dtCurrentDateTime to WebAppSession.LastAccessTime
+
+        Move dtCurrentDateTime to WebAppSession.CreateDate
+        Move dtCurrentDateTime to WebAppSession.LastAccessDate
+    End_Procedure
+
+    Function TimeToString DateTime dtTime Returns String
+        String sHours sMinutes sSeconds
+
+        Move (String(DateGetHour(dtTime))) to sHours
+        Move (String(DateGetMinute(dtTime))) to sMinutes
+        Move (String(DateGetSecond(dtTime))) to sSeconds
+
+        If (Length(sHours) = 1) ;
+            Move ("0" + sHours) to sHours
+        If (Length(sMinutes) = 1) ;
+            Move ("0" + sMinutes) to sMinutes
+        If (Length(sSeconds) = 1) ;
+            Move ("0" + sSeconds) to sSeconds
+
+        Function_Return (sHours + ":" + sMinutes + ":" + sSeconds)
+    End_Function
 
 End_Class

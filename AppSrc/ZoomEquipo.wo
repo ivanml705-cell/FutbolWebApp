@@ -1,5 +1,6 @@
 Use cWebView.pkg
 Use cWebPanel.pkg
+Use cWebGroup.pkg
 Use cWebForm.pkg
 Use cWebButton.pkg
 Use cWebMenuGroup.pkg
@@ -60,9 +61,11 @@ Object oZoomEquipo is a cWebView
             WebSetResponsive piLabelOffset rmMobile to 0
         End_Object
 
-        Object oButtonPanel is a cWebPanel
+        Object oButtonPanel is a cWebGroup
             Set piColumnCount to 12
             Set piColumnSpan to 0
+            Set pbShowBorder to False
+            Set pbShowCaption to False
 
             Object oGuardar is a cWebButton
                 Set psCaption to "Guardar"

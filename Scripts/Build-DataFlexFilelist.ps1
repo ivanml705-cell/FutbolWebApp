@@ -38,7 +38,9 @@ $entries = @(
     @{ Number = 9;   Root = "ODBC_DRV:nietodehijos";    Logical = "nietodehijos";    Display = "nietodehijos" },
     @{ Number = 253; Root = "ODBC_DRV:CodeType";        Logical = "CodeType";        Display = "CodeType" },
     @{ Number = 254; Root = "ODBC_DRV:CodeMast";        Logical = "CodeMast";        Display = "CodeMast" },
-    @{ Number = 263; Root = "ODBC_DRV:WebAppSession";   Logical = "WebAppSession";   Display = "WebAppSession" }
+    @{ Number = 263; Root = "ODBC_DRV:WebAppSession";   Logical = "WebAppSession";   Display = "WebAppSession" },
+    @{ Number = 264; Root = "ODBC_DRV:WebAppUser";      Logical = "WebAppUser";      Display = "WebAppUser" },
+    @{ Number = 265; Root = "ODBC_DRV:WebAppServerProps"; Logical = "WebAppServerProps"; Display = "WebAppServerProps" }
 )
 
 foreach ($entry in $entries) {

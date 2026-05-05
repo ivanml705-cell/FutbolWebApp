@@ -1,0 +1,104 @@
+Use cWebServerPropStore.pkg
+
+Class cFutbolWebServerPropStore is a cWebServerPropStore
+
+    Procedure StorePropValues String sKey UChar[] ByRef ucPropData
+        DateTime dtExpires dtCreated
+        Integer iMaxSize iPages iPage iChar
+        UChar[] ucPage
+        Boolean bLocking
+        String sExpiresTime sCreatedTime sLockedTime
+
+        Move (CurrentDateTime()) to dtCreated
+        Get TimeToString dtCreated to sCreatedTime
+        Get TimeToString dtCreated to sLockedTime
+
+        Get CalculateExpires to dtExpires
+        Get TimeToString dtExpires to sExpiresTime
+        Get pbLocking to bLocking
+        Get piMaxSize to iMaxSize
+
+        Move (Round((Number(SizeOfArray(ucPropData)) / Number(iMaxSize)) + 0.5)) to iPages
+        Move 0 to iPage
+        Move 0 to iChar
+
+        Move sKey to WebAppServerProps.Key
+        Move 0 to WebAppServerProps.Page
+        Find EQ WebAppServerProps by 1
+
+        While (Found and (Trim(WebAppServerProps.Key) = sKey))
+            If (iPage < iPages) Begin
+                Reread WebAppServerProps
+
+                    If (iPage = 0) Begin
+                        If (bLocking) Begin
+                            Move 0 to WebAppServerProps.Locked
+                        End
+                    End
+                    Move dtExpires to WebAppServerProps.ExpiresDate
+                    Move sExpiresTime to WebAppServerProps.ExpiresTime
+                    Move dtCreated to WebAppServerProps.LockedDate
+                    Move sLockedTime to WebAppServerProps.LockedTime
+
+                    Move iPages to WebAppServerProps.Pages
+                    Move iPage to WebAppServerProps.Page
+
+                    If (iPages = 1) Begin
+                        Set_Field_Value WebAppServerProps.File_Number (RefTable(WebAppServerProps.Data)) to ucPropData
+                    End
+                    Else Begin
+                        Move (CopyArray(ucPropData, iChar, (iChar + iMaxSize) - 1)) to ucPage
+                        Set_Field_Value WebAppServerProps.File_Number (RefTable(WebAppServerProps.Data)) to ucPage
+                    End
+
+                    SaveRecord WebAppServerProps
+                Unlock
+            End
+            Else Begin
+                Delete WebAppServerProps
+
+                Move sKey to WebAppServerProps.Key
+                Move iPage to WebAppServerProps.Page
+            End
+
+            Increment iPage
+            Move ((iChar + iMaxSize)) to iChar
+            Find GT WebAppServerProps by 1
+        Loop
+
+        While (iPage < iPages)
+            Clear WebAppServerProps
+
+            If (iPage = 0) Begin
+                If (bLocking) Begin
+                    Move 0 to WebAppServerProps.Locked
+                End
+            End
+            Move dtExpires to WebAppServerProps.ExpiresDate
+            Move sExpiresTime to WebAppServerProps.ExpiresTime
+
+            Move dtCreated to WebAppServerProps.CreateDate
+            Move sCreatedTime to WebAppServerProps.CreateTime
+            Move dtCreated to WebAppServerProps.LockedDate
+            Move sLockedTime to WebAppServerProps.LockedTime
+
+            Move sKey to WebAppServerProps.Key
+            Move iPages to WebAppServerProps.Pages
+            Move iPage to WebAppServerProps.Page
+
+            If (iPages = 1) Begin
+                Set_Field_Value WebAppServerProps.File_Number (RefTable(WebAppServerProps.Data)) to ucPropData
+            End
+            Else Begin
+                Move (CopyArray(ucPropData, iChar, (iChar + iMaxSize) - 1)) to ucPage
+                Set_Field_Value WebAppServerProps.File_Number (RefTable(WebAppServerProps.Data)) to ucPage
+            End
+
+            SaveRecord WebAppServerProps
+
+            Move ((iChar + iMaxSize)) to iChar
+            Increment iPage
+        Loop
+    End_Procedure
+
+End_Class
