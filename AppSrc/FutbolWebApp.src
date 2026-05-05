@@ -3,6 +3,8 @@ Use cConnection.pkg
 Use cWebMenuItem.pkg
 
 Register_Object oDashboard
+Register_Object oSelectEntrenador
+Register_Object oZoomEntrenador
 
 Object oApplication is a cApplication
     Object oConnection is a cConnection
@@ -116,6 +118,8 @@ Object oWebApp is a cWebApp
     Use SessionManager.wo
     Use WebResourceManager.wo
     Use Dashboard.wo
+    Use SelectEntrenador.wo
+    Use ZoomEntrenador.wo
 
     Set phoDefaultView to oDashboard
 End_Object
