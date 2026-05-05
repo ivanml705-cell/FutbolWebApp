@@ -1,0 +1,5 @@
+#REPLACE FILE4 equipo
+#REPLACE equipo.File_Number |CI4
+#REPLACE equipo.ID |FN4,1
+#REPLACE equipo.Nombre |FS4,2
+#REPLACE equipo.LigaID |FN4,3

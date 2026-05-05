@@ -1,0 +1,112 @@
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebGroup.pkg
+Use cWebHtmlBox.pkg
+
+Register_Object oSelectEntrenador
+Register_Object oSelectJugador
+Register_Object oSelectPosicion
+Register_Object oSelectEquipo
+Register_Object oSelectLiga
+
+Object oDashboard is a cWebView
+    Set piMaxWidth to 1024
+    Set psCaption to "Dashboard"
+    Set peViewType to vtUndefined
+    Set pbShowCaption to False
+    Set psCSSClass to "Dashboard"
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 24
+
+        WebSetResponsive piColumnCount rmMobile to 1
+        WebSetResponsive piColumnCount rmTabletPortrait to 16
+
+        Object oTiles_grp is a cWebGroup
+            Set piColumnSpan to 16
+            Set pbShowBorder to False
+            Set pbShowCaption to False
+            Set piColumnCount to 12
+            Set psCSSClass to "TilesGroup"
+
+            WebSetResponsive piColumnCount rmMobile to 6
+            WebSetResponsive piColumnSpan rmMobile to 0
+
+            Object oWelcomeTile is a cWebHtmlBox
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Light"
+                Set psHtml to '<div class="WebCon_Sizer"><div class="Tile_Title">FutbolWebApp</div><div class="Tile_Subtitle">Dashboard</div></div>'
+            End_Object
+
+            Object oEntrenadorTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile LightAlternate"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Entrenadores</div><div class="Tile_Subtitle">Abrir listado</div></div>'
+
+                WebRegisterPath ntNavigateForwardCustom oSelectEntrenador Self "DashboardEntrenador"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+            End_Object
+
+            Object oJugadorTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Dark"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Jugadores</div><div class="Tile_Subtitle">Abrir listado</div></div>'
+
+                WebRegisterPath ntNavigateForwardCustom oSelectJugador Self "DashboardJugador"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+            End_Object
+
+            Object oPosicionTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile DarkAlternate"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Posiciones</div><div class="Tile_Subtitle">Abrir listado</div></div>'
+
+                WebRegisterPath ntNavigateForwardCustom oSelectPosicion Self "DashboardPosicion"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+            End_Object
+
+            Object oEquipoTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Light"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Equipos</div><div class="Tile_Subtitle">Abrir listado</div></div>'
+
+                WebRegisterPath ntNavigateForwardCustom oSelectEquipo Self "DashboardEquipo"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+            End_Object
+
+            Object oLigaTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile LightAlternate"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Ligas</div><div class="Tile_Subtitle">Abrir listado</div></div>'
+
+                WebRegisterPath ntNavigateForwardCustom oSelectLiga Self "DashboardLiga"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
+            End_Object
+        End_Object
+    End_Object
+
+    Procedure OnBeforeShow
+        Send SetBreadcrumbCaption "Dashboard"
+        Send SetHeaderCaption "FutbolWebApp"
+    End_Procedure
+End_Object

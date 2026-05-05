@@ -1,0 +1,8 @@
+Default_Nullable_Text 1
+Default_Nullable_Binary 1
+Default_Default_Text NULL
+Default_Default_Binary NULL
+Default_Max_Rows 10
+Character_Data_Handling utf8
+Trim_Varchar_Values 1
+Use_Select_For_Update 1
