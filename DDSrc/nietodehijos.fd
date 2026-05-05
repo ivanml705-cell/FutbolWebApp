@@ -1,0 +1,6 @@
+#REPLACE FILE9 nietodehijos
+#REPLACE nietodehijos.File_Number |CI9
+#REPLACE nietodehijos.ID |FN9,1
+#REPLACE nietodehijos.Name |FS9,2
+#REPLACE nietodehijos.hijoJugadorID |FN9,3
+#REPLACE nietodehijos.hijoEntrenadorID |FN9,4
