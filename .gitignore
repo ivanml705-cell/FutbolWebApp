@@ -20,6 +20,8 @@ Data/Reindex.log
 .vs/
 .vscode/
 .idea/
+AppSrc/config/
+IdeSrc/*.loc
 *.suo
 *.user
 Thumbs.db
