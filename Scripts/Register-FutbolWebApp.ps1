@@ -44,12 +44,17 @@ New-ItemProperty -Path $registryPath -Name ProgramParameters -Value "" -Property
 
 & icacls $appHtml /grant "IIS_IUSRS:(OI)(CI)RX" "IUSR:(OI)(CI)RX" | Out-Null
 
-& $appCmd list app "$SiteName/$VirtualDir" | Out-Null
-if ($LASTEXITCODE -eq 0) {
-    & $appCmd delete app "$SiteName/$VirtualDir" | Out-Null
+$manager = New-Object -ComObject "DfManageIIS.ManageIIS.25.0"
+$restrictionCode = [uint32]$manager.AddWsoIsapiRestrictions()
+if ($restrictionCode -ne 0) {
+    throw "Failed to add DataFlex WSO ISAPI restrictions: $($manager.ErrorText($restrictionCode))"
 }
 
-& $appCmd add app "/site.name:$SiteName" "/path:/$VirtualDir" "/physicalPath:$appHtml" | Out-Null
+$registerCode = [uint32]$manager.RegisterVirtualDir($SiteName, $VirtualDir, $appHtml, $true)
+if ($registerCode -ne 0) {
+    throw "Failed to register DataFlex virtual directory: $($manager.ErrorText($registerCode))"
+}
+
 & $appCmd set app "$SiteName/$VirtualDir" "/applicationPool:DefaultAppPool" | Out-Null
 & $appCmd set config "$SiteName/$VirtualDir" -section:system.webServer/security/authentication/anonymousAuthentication /enabled:true /commit:apphost | Out-Null
 & $appCmd set config "$SiteName/$VirtualDir" -section:system.webServer/security/authentication/windowsAuthentication /enabled:false /commit:apphost | Out-Null
