@@ -3,6 +3,8 @@ Use cWebPanel.pkg
 Use cWebGroup.pkg
 Use cWebHtmlBox.pkg
 
+Register_Object oSelectEntrenador
+
 Object oDashboard is a cWebView
     Set piMaxWidth to 1024
     Set psCaption to "Dashboard"
@@ -27,6 +29,20 @@ Object oDashboard is a cWebView
                 Set piColumnSpan to 6
                 Set psCSSClass to "Tile Light"
                 Set psHtml to '<div class="WebCon_Sizer"><div class="Tile_Title">FutbolWebApp</div><div class="Tile_Subtitle">Dashboard</div></div>'
+            End_Object
+
+            Object oEntrenadorTile is a cWebHtmlBox
+                Set pbServerOnClick to True
+                Set piColumnSpan to 6
+                Set piColumnIndex to 6
+                Set psCSSClass to "Tile LightAlternate"
+                Set psHtml to '<div class="WebCon_Sizer" data-ServerOnClick="openview"><div class="Tile_Title">Entrenadores</div><div class="Tile_Subtitle">Abrir listado</div></div>'
+
+                WebRegisterPath ntNavigateForwardCustom oSelectEntrenador Self "DashboardEntrenador"
+
+                Procedure OnClick String sId String sParam
+                    Send NavigatePath
+                End_Procedure
             End_Object
         End_Object
     End_Object
