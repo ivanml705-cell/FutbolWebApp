@@ -1,0 +1,31 @@
+# DataFlex build output
+Programs/*
+!Programs/
+!Programs/Config.ws
+AppSrc/*.prn
+AppSrc/*.dep
+AppSrc/*.err
+AppSrc/*.flx
+AppSrc/*.dbg
+
+# Runtime/cache files
+Data/*.cch
+Data/*.log
+Data/Reindex.log
+*.log
+*.tmp
+*.bak
+
+# Local IDE and OS files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+Thumbs.db
+Desktop.ini
+
+# Database/runtime dumps generated during local testing
+mysql-data/
+*.pid
+*.sock

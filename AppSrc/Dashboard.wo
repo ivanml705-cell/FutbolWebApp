@@ -1,0 +1,38 @@
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebGroup.pkg
+Use cWebHtmlBox.pkg
+
+Object oDashboard is a cWebView
+    Set piMaxWidth to 1024
+    Set psCaption to "Dashboard"
+    Set peViewType to vtUndefined
+    Set pbShowCaption to False
+    Set psCSSClass to "Dashboard"
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 24
+
+        WebSetResponsive piColumnCount rmMobile to 1
+        WebSetResponsive piColumnCount rmTabletPortrait to 16
+
+        Object oTiles_grp is a cWebGroup
+            Set piColumnSpan to 16
+            Set pbShowBorder to False
+            Set pbShowCaption to False
+            Set piColumnCount to 12
+            Set psCSSClass to "TilesGroup"
+
+            Object oWelcomeTile is a cWebHtmlBox
+                Set piColumnSpan to 6
+                Set psCSSClass to "Tile Light"
+                Set psHtml to '<div class="WebCon_Sizer"><div class="Tile_Title">FutbolWebApp</div><div class="Tile_Subtitle">Dashboard</div></div>'
+            End_Object
+        End_Object
+    End_Object
+
+    Procedure OnBeforeShow
+        Send SetBreadcrumbCaption "Dashboard"
+        Send SetHeaderCaption "FutbolWebApp"
+    End_Procedure
+End_Object

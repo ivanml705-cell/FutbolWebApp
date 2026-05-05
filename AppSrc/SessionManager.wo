@@ -1,0 +1,4 @@
+Use cWebSessionManager.pkg
+
+Object oSessionManager is a cWebSessionManager
+End_Object
