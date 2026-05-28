@@ -1,12 +1,17 @@
 Use DataDict.pkg
 
 Open jugadorposicion
+Open jugador
+Open posicion
 
 Class cJugadorPosicionDataDictionary is a DataDictionary
 
     Procedure Construct_Object
         Forward Send Construct_Object
         Set Main_File to jugadorposicion.File_Number
+        Set pbUseDDRelates to True
+        Set Field_Related_FileField Field jugadorposicion.JugadorID to File_Field jugador.ID
+        Set Field_Related_FileField Field jugadorposicion.PosicionID to File_Field posicion.ID
 
         Set Foreign_Field_Option DD_KEYFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True

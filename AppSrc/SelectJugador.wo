@@ -9,6 +9,7 @@ Use cWebMenuItem.pkg
 Use cJugadorDataDictionary.dd
 
 Register_Object oZoomJugador
+Register_Object oSelectAsignarPosicion
 
 Object oSelectJugador is a cWebView
     Set peWebViewStyle to wvsDrillDown
@@ -63,6 +64,34 @@ Object oSelectJugador is a cWebView
 
                 Procedure OnClick String sButton String sRowId
                     Send NavigateForward of oZoomJugador Self
+                End_Procedure
+            End_Object
+
+            Object oAssignButton is a cWebColumnButton
+                Set piWidth to 85
+                Set pbFixedWidth to True
+                Set psCaption to "Asignar"
+                Set pbResizable to False
+                Set peAlign to alignRight
+                Set piListRowSpan to 2
+
+                WebRegisterPath ntNavigateForward oSelectAsignarPosicion Self "AssignJugadorPosicionButton"
+
+                Procedure OnClick String sButton String sRowId
+                    Boolean bOk
+
+                    Get ChangeCurrentRow of oList "row" sRowId to bOk
+                    If (bOk) Begin
+                        Send NavigateForward of oSelectAsignarPosicion Self
+                    End
+                End_Procedure
+
+                Procedure OnGetNavigateForwardData tWebNavigateData ByRef NavigateData Handle hoToView
+                    String sJugador
+
+                    Move (Trim(jugador.Nombre) * Trim(jugador.Apellido)) to sJugador
+                    Get NamedValueAdd NavigateData.NamedValues "JugadorID" (String(jugador.ID)) to NavigateData.NamedValues
+                    Get NamedValueAdd NavigateData.NamedValues "JugadorNombre" sJugador to NavigateData.NamedValues
                 End_Procedure
             End_Object
 
