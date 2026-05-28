@@ -22,6 +22,8 @@ Data/Reindex.log
 .idea/
 AppSrc/config/
 IdeSrc/*.loc
+IdeSrc/*.dsk
+IdeSrc/*.mtd
 *.suo
 *.user
 Thumbs.db
