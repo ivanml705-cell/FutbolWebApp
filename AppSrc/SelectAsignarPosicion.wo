@@ -1,0 +1,151 @@
+Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebList.pkg
+Use cWebColumn.pkg
+Use cWebColumnButton.pkg
+Use cWebMenuGroup.pkg
+Use cWebMenuItem.pkg
+
+Use cPosicionDataDictionary.dd
+Use cJugadorPosicionDataDictionary.dd
+
+Object oSelectAsignarPosicion is a cWebView
+    Set peWebViewStyle to wvsDrillDown
+    Set peViewType to vtSelect
+    Set psCaption to "Asignar posicion"
+    Set psStateViewName to "AsignarPosicion"
+    Set piMaxWidth to 720
+    Set piColumnCount to 6
+    Set peLayoutType to ltGrid
+
+    { WebProperty=Server }
+    Property Integer piJugadorID 0
+
+    { WebProperty=Server }
+    Property String psJugadorNombre ""
+
+    WebSetResponsive piColumnCount rmTabletPortrait to 3
+
+    Object oPosicion_DD is a cPosicionDataDictionary
+    End_Object
+
+    Set Main_DD to oPosicion_DD
+    Set Server to oPosicion_DD
+
+    Object oWebMainPanel is a cWebPanel
+        Set psRowHeights to "0/1fr"
+        Set piRowCount to 1
+
+        Object oList is a cWebList
+            Set pbFillHeight to True
+            Set piColumnSpan to 0
+            Set pbServerOnRowClick to True
+            Set psCSSClass to "MobileList"
+            Set piSortColumn to 0
+            Set pbShowHeader to False
+
+            Object oNombre is a cWebColumn
+                Entry_Item posicion.Nombre
+                Set psCaption to "Posicion"
+                Set psCSSClass to "RowCaption"
+                Set peAlign to alignLeft
+                Set piWidth to 300
+                Set piListColSpan to 4
+            End_Object
+
+            Object oAssignButton is a cWebColumnButton
+                Set piWidth to 90
+                Set pbFixedWidth to True
+                Set psCaption to "Asignar"
+                Set pbResizable to False
+                Set peAlign to alignRight
+
+                Procedure OnClick String sButton String sRowId
+                    Boolean bOk
+
+                    Get ChangeCurrentRow of oList "row" sRowId to bOk
+                    If (bOk) Begin
+                        Send AsignarPosicion
+                    End
+                End_Procedure
+            End_Object
+
+            Procedure OnRowClick String sRowID
+                Boolean bOk
+
+                Get ChangeCurrentRow of oList "row" sRowID to bOk
+                If (bOk) Begin
+                    Send AsignarPosicion
+                End
+            End_Procedure
+        End_Object
+    End_Object
+
+    Object oActionGroup is a cWebMenuGroup
+        Set psGroupName to "MainActions"
+
+        Object oSearch is a cWebMenuItem
+            Set psCaption to "Buscar"
+            Set psCSSClass to "WebPromptMenuItem"
+
+            Procedure OnClick
+                Send Search of oList
+            End_Procedure
+        End_Object
+    End_Object
+
+    Procedure AsignarPosicion
+        Integer iJugadorID iPosicionID
+        Boolean bExists
+
+        WebGet piJugadorID to iJugadorID
+        Move posicion.ID to iPosicionID
+
+        If (iJugadorID <= 0) Begin
+            Send ShowInfoBox "Selecciona un jugador antes de asignar una posicion." "Asignar posicion"
+            Procedure_Return
+        End
+
+        If (iPosicionID <= 0) Begin
+            Send ShowInfoBox "Selecciona una posicion valida." "Asignar posicion"
+            Procedure_Return
+        End
+
+        Clear jugadorposicion
+        Move iJugadorID to jugadorposicion.JugadorID
+        Move iPosicionID to jugadorposicion.PosicionID
+        Find EQ jugadorposicion by 2
+        Move (Found) to bExists
+
+        If (bExists) Begin
+            Send ShowInfoBox "El jugador ya tiene esa posicion asignada." "Asignar posicion"
+        End
+        Else Begin
+            Clear jugadorposicion
+            Move iJugadorID to jugadorposicion.JugadorID
+            Move iPosicionID to jugadorposicion.PosicionID
+            SaveRecord jugadorposicion
+            Send ShowInfoBox ("Posicion asignada: " + Trim(posicion.Nombre)) "Asignar posicion"
+        End
+    End_Procedure
+
+    Procedure OnNavigateForward tWebNavigateData NavigateData Handle hoInvokingView Handle hoInvokingObject
+        Integer iJugadorID
+        String sJugadorID sJugadorNombre
+
+        Get NamedValueGet NavigateData.NamedValues "JugadorID" to sJugadorID
+        Get NamedValueGet NavigateData.NamedValues "JugadorNombre" to sJugadorNombre
+        Move sJugadorID to iJugadorID
+
+        WebSet piJugadorID to iJugadorID
+        WebSet psJugadorNombre to sJugadorNombre
+
+        Send SetBreadcrumbCaption "Asignar posicion"
+        If (Trim(sJugadorNombre) <> "") Begin
+            Send SetHeaderCaption ("Asignar posicion - " + Trim(sJugadorNombre))
+        End
+        Else Begin
+            Send SetHeaderCaption "Asignar posicion"
+        End
+    End_Procedure
+End_Object

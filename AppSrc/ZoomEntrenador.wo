@@ -7,6 +7,7 @@ Use cWebMenuGroup.pkg
 Use cWebMenuItem.pkg
 
 Use cEntrenadorDataDictionary.dd
+Use cEquipoDataDictionary.dd
 
 Object oZoomEntrenador is a cWebView
     Set peWebViewStyle to wvsDrillDown
@@ -19,7 +20,11 @@ Object oZoomEntrenador is a cWebView
     Set piColumnCount to 12
     Set peLayoutType to ltGrid
 
+    Object oEquipo_DD is a cEquipoDataDictionary
+    End_Object
+
     Object oEntrenador_DD is a cEntrenadorDataDictionary
+        Set DDO_Server to oEquipo_DD
     End_Object
 
     Set Main_DD to oEntrenador_DD
@@ -76,6 +81,17 @@ Object oZoomEntrenador is a cWebView
             Set psLabel to "Equipo ID"
             Set piColumnSpan to 0
             Set piLabelOffset to 110
+
+            WebSetResponsive peLabelPosition rmMobile to lpTop
+            WebSetResponsive piLabelOffset rmMobile to 0
+        End_Object
+
+        Object oEquipoNombre is a cWebForm
+            Entry_Item equipo.Nombre
+            Set psLabel to "Equipo"
+            Set piColumnSpan to 0
+            Set piLabelOffset to 110
+            Set pbEnabled to False
 
             WebSetResponsive peLabelPosition rmMobile to lpTop
             WebSetResponsive piLabelOffset rmMobile to 0
