@@ -120,6 +120,21 @@ Object oZoomEntrenador is a cWebView
                     Send Request_Clear
                 End_Procedure
             End_Object
+
+            Object oDespedir is a cWebButton
+                Set psCaption to "Despedir"
+                Set piColumnSpan to 3
+
+                Procedure OnClick
+                    If (entrenador.ID > 0) Begin
+                        Send Request_ClearBindingTable of oEquipoID
+                        Send Request_Save
+                    End
+                    Else Begin
+                        Send ShowInfoBox "Selecciona un entrenador antes de despedirlo." "Despedir"
+                    End
+                End_Procedure
+            End_Object
         End_Object
     End_Object
 
@@ -142,6 +157,21 @@ Object oZoomEntrenador is a cWebView
 
             Procedure OnClick
                 Send Request_Clear
+            End_Procedure
+        End_Object
+
+        Object oDismissBtn is a cWebMenuItem
+            Set psCaption to "Despedir"
+            Set peActionDisplay to adMenu
+
+            Procedure OnClick
+                If (entrenador.ID > 0) Begin
+                    Send Request_ClearBindingTable of oEquipoID
+                    Send Request_Save
+                End
+                Else Begin
+                    Send ShowInfoBox "Selecciona un entrenador antes de despedirlo." "Despedir"
+                End
             End_Procedure
         End_Object
     End_Object
