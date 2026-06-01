@@ -1,6 +1,7 @@
 Use DataDict.pkg
 
 Open entrenador
+Open equipo
 
 Class cEntrenadorDataDictionary is a DataDictionary
 
@@ -12,6 +13,17 @@ Class cEntrenadorDataDictionary is a DataDictionary
         Set Foreign_Field_Option DD_KEYFIELD DD_FINDREQ to True
         Set Foreign_Field_Option DD_INDEXFIELD DD_NOPUT to True
         Set Foreign_Field_Option DD_DEFAULT DD_DISPLAYONLY to True
+    End_Procedure
+
+    Procedure Attach_Main_File
+        Integer iEquipoStatus
+
+        Forward Send Attach_Main_File
+
+        Get_Attribute DF_FILE_STATUS of equipo.File_Number to iEquipoStatus
+        If (iEquipoStatus <> DF_FILE_ACTIVE) Begin
+            Set_Attribute DF_FIELD_IS_NULL of entrenador.File_Number 5 to True
+        End
     End_Procedure
 
 End_Class
